@@ -11,6 +11,10 @@
 * built-in **analytics** (basic statistics on numeric input)
 * built-in **export** (save results to JSON, CSV, or plain text)
 
+The `cli/analytics.py` module computes and formats descriptive statistics
+for numeric input. The `cli/exporter.py` module writes those results to JSON,
+CSV, or plain-text files.
+
 __Installation__
 
 ```
