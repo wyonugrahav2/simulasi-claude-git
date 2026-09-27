@@ -2,12 +2,14 @@
 
 # python-cli-skeleton
 
-A simple python command line interface skeleton project. Features support for:
+**v2.0** — A simple python command line interface skeleton project. Features support for:
 
 * travis-ci
 * coveralls
 * argparse
 * py.test (testing)
+* built-in **analytics** (basic statistics on numeric input)
+* built-in **export** (save results to JSON, CSV, or plain text)
 
 __Installation__
 
@@ -40,9 +42,60 @@ entry_points="""
 """.format(program = _program),
 ```
 
+__New in v2.0: Analytics (`cli/analytics.py`)__
+
+The `--data` option accepts one or more numeric values. Combined with `--stats`, it computes and prints basic descriptive statistics (`count`, `sum`, `min`, `max`, `mean`, `median`, `stdev`) as a formatted table:
+
+```
+cli --data 4 8 15 16 23 42 --stats
+```
+
+```
+Metric       Value
+--------  --------
+count       6
+sum       108
+min         4
+max        42
+mean       18
+median     15.5
+stdev      13.4907
+```
+
+The underlying logic lives in `cli/analytics.py` and can be reused directly:
+
+```python
+from cli.analytics import compute_stats, format_stats
+
+stats = compute_stats([4, 8, 15, 16, 23, 42])
+print(format_stats(stats))
+```
+
+__New in v2.0: Export (`cli/exporter.py`)__
+
+Use `--export <filepath>` to save the computed statistics to a file. Choose the output format with `--export-format` (`json` [default], `csv`, or `txt`):
+
+```
+cli --data 1 2 3 4 5 --export results.json
+cli --data 1 2 3 4 5 --export results.csv --export-format csv
+```
+
+Missing parent directories in the destination path are created automatically. The underlying logic lives in `cli/exporter.py`:
+
+```python
+from cli.exporter import export_data
+
+export_data({"mean": 3.0, "count": 5}, "results.json", fmt="json")
+```
+
+Both `--stats` and `--export` require `--data` to be supplied, and they can be combined in a single invocation to both print and save the results.
+
 __requirements.txt__
 
-Add any modules you want installed to the `requirements.txt` file. The setup file parses this file before installation. Currently, `[clint](https://github.com/kennethreitz/clint)` is the only requirement. It is a useful module for adding color, indenting, progress bars, and other useful things to command-line based programs.
+Add any modules you want installed to the `requirements.txt` file. The setup file parses this file before installation. Current requirements:
+
+* `[clint](https://github.com/kennethreitz/clint)` — adding color, indenting, progress bars, and other useful things to command-line based programs.
+* `[tabulate](https://github.com/astanin/python-tabulate)` — used by `cli/analytics.py` to render the statistics table.
 
 __travis-ci__
 
