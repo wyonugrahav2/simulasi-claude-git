@@ -108,3 +108,7 @@ A `.travis.yml` file is included and setup for Python. Testing is performed usin
 __coveralls__
 
 Support for coveralls is build in using `pytest-cov`. Please see [coveralls.io](https://coveralls.io/) for more information. You may want to edit the `.coveragerc` file to fine tune how coverage is calculated.
+
+## Kontributor Utama
+- Wyo Nugraha (@wyonugrahav2)
+- Alexei (@alexei-arch)
